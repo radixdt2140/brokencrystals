@@ -1,2 +1,10 @@
 .git
 node_modules
+
+.env
+.env.*
+client/.env
+client/.env.*
+client/public/.env
+client/public/.env.*
+config/keys/

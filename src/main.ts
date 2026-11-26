@@ -85,16 +85,16 @@ async function bootstrap() {
     trustProxy: true,
     onProtoPoisoning: 'ignore',
     https:
-      process.env.NODE_ENV === 'production'
-        ? {
-            cert: readFileSync(
-              '/etc/letsencrypt/live/brokencrystals.com/fullchain.pem'
-            ),
-            key: readFileSync(
-              '/etc/letsencrypt/live/brokencrystals.com/privkey.pem'
-            )
-          }
-        : null
+     process.env.ENABLE_HTTPS === 'true'
+      ? {
+          cert: readFileSync(
+            '/etc/letsencrypt/live/brokencrystals.com/fullchain.pem'
+          ),
+          key: readFileSync(
+            '/etc/letsencrypt/live/brokencrystals.com/privkey.pem'
+          )
+        }
+    : null
   });
 
   server.setDefaultRoute((req, res) => {
@@ -266,7 +266,7 @@ async function bootstrap() {
   await app.listen(3000, '0.0.0.0');
 }
 
-if (cluster.isPrimary && process.env.NODE_ENV === 'production') {
+if (cluster.isPrimary && process.env.ENABLE_CLUSTER === 'true') {
   console.log(`Primary ${process.pid} is running`);
 
   const numCPUs = os.cpus().length;
