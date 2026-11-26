@@ -7,8 +7,8 @@ export class EmailService {
   private readonly logger = new Logger(EmailService.name);
 
   private readonly smtpServerDetails = {
-    host: 'mailcatcher',
-    port: 1025,
+    host: process.env.MAILCATCHER_SMTP_HOST || 'mailcatcher',
+    port: Number(process.env.MAILCATCHER_SMTP_PORT || 1025),
     secure: false,
     auth: {
       user: 'mailcatcher',
@@ -19,7 +19,7 @@ export class EmailService {
   private readonly transporter = createTransport(this.smtpServerDetails);
 
   private readonly MAIL_CATCHER_MESSAGES_URL =
-    'http://mailcatcher:1080/messages';
+  process.env.MAILCATCHER_API_URL || 'http://mailcatcher:1080/messages';
 
   async sendRawEmail(
     from: string,
